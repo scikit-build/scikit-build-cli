@@ -10,6 +10,7 @@ def __dir__() -> list[str]:
 
 
 @click.command()
+@click.help_option("--help", "-h")
 @click.pass_context
 def metadata(ctx: click.Context) -> None:  # noqa: ARG001
     """

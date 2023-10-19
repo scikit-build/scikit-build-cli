@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import click
 
-__all__: list[str] = ["dynamic_metadata"]
+__all__: list[str] = ["init"]
 
 
 def __dir__() -> list[str]:
@@ -12,8 +12,8 @@ def __dir__() -> list[str]:
 @click.command()
 @click.help_option("--help", "-h")
 @click.pass_context
-def dynamic_metadata(ctx: click.Context) -> None:  # noqa: ARG001
+def init(ctx: click.Context) -> None:  # noqa: ARG001
     """
-    Get the generated dynamic metadata
+    Add scikit-build to an existing project
     """
     # TODO: Add specific implementations

@@ -18,9 +18,10 @@ def __dir__() -> list[str]:
 
 @click.command()
 @_build_dir
+@click.help_option("--help", "-h")
 @click.pass_context
 def install(ctx: click.Context, build_dir: Path) -> None:  # noqa: ARG001
     """
-    Run cmake install step
+    Run CMake install step
     """
     # TODO: Add specific implementations
