@@ -165,4 +165,7 @@ messages_control.disable = [
   "line-too-long",
   "missing-module-docstring",
   "wrong-import-position",
+  "unused-argument",
+  "broad-exception-caught",
+  "no-value-for-parameter",  # Triggered by calling click fn
 ]
