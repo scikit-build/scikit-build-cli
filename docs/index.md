@@ -13,7 +13,7 @@ dynamic_metadata
 ```
 
 ```{eval-rst}
-.. click:: scikit_build_core.cli.main:skbuild
+.. click:: scikit_build_core.cli.__main__:skbuild
    :prog: skbuild
 
 ```
