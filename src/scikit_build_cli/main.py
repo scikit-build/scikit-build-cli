@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import pathlib
-import sys
+from collections.abc import MutableMapping, Sequence
+from importlib.metadata import EntryPoint
 
 import click
 
@@ -15,7 +16,47 @@ def __dir__() -> list[str]:
     return __all__
 
 
-@click.group("skbuild")
+class LazyGroup(click.Group):
+    """
+    Lazy loader for click commands. Based on Click's documentation, but uses
+    EntryPoints.
+    """
+
+    def __init__(
+        self,
+        name: str | None = None,
+        commands: MutableMapping[str, click.Command]
+        | Sequence[click.Command]
+        | None = None,
+        *,
+        lazy_subcommands: Sequence[EntryPoint] = (),
+        **kwargs: object,
+    ):
+        super().__init__(name, commands, **kwargs)
+        self.lazy_subcommands = {v.name: v for v in lazy_subcommands}
+
+    def list_commands(self, ctx: click.Context) -> list[str]:
+        return sorted([*super().list_commands(ctx), *self.lazy_subcommands])
+
+    def get_command(self, ctx: click.Context, cmd_name: str) -> click.Command | None:
+        if cmd_name in self.lazy_subcommands:
+            return self._lazy_load(cmd_name)
+        return super().get_command(ctx, cmd_name)
+
+    def _lazy_load(self, cmd_name: str) -> click.Command:
+        ep = self.lazy_subcommands[cmd_name]
+        cmd_object = ep.load()
+        if not isinstance(cmd_object, click.Command):
+            msg = f"Lazy loading of {ep} failed by returning a non-command object"
+            raise ValueError(msg)
+        return cmd_object
+
+
+# Add all plugin commands.
+CMDS = list(metadata.entry_points(group="skbuild.commands"))
+
+
+@click.group("skbuild", cls=LazyGroup, lazy_subcommands=CMDS)
 @click.version_option(__version__)
 @click.option(
     "--root",
@@ -27,7 +68,7 @@ def __dir__() -> list[str]:
         writable=True,
         path_type=pathlib.Path,
     ),
-    help="Path to the python project's root",
+    help="Path to the Python project's root",
 )
 @click.pass_context
 def skbuild(ctx: click.Context, root: pathlib.Path) -> None:  # noqa: ARG001
@@ -35,18 +76,3 @@ def skbuild(ctx: click.Context, root: pathlib.Path) -> None:  # noqa: ARG001
     scikit-build Main CLI interface
     """
     # TODO: Add specific implementations
-
-
-# Add all plugin commands. Native subcommands are loaded in the package's __init__
-for ep in metadata.entry_points(group="skbuild.commands"):
-    try:
-        # Entry point can either point to a whole module or the decorated command
-        if not ep.attr:
-            # If it's a module, just load the module. It should have the necessary `skbuild.command` interface
-            ep.load()
-        else:
-            # Otherwise assume it is a decorated command that needs to be loaded manually
-            skbuild.add_command(ep.load())
-    except Exception as err:
-        # TODO: the print should go through the click logging interface
-        print(f"Could not load cli plugin: {ep}\n{err}", file=sys.stderr)  # noqa: T201

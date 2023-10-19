@@ -61,6 +61,13 @@ Changelog = "https://github.com/scikit-build/scikit-build-cli/releases"
 [project.scripts]
 skbuild = "scikit_build_cli.__main__:run_cli"
 
+[project.entry-points."skbuild.commands"]
+build = "scikit_build_cli.commands.build:build"
+configure = "scikit_build_cli.commands.configure:configure"
+dynamic-metadata = "scikit_build_cli.commands.dynamic_metadata:dynamic_metadata"
+metadata = "scikit_build_cli.commands.metadata:metadata"
+install = "scikit_build_cli.commands.install:install"
+
 [tool.hatch]
 version.source = "vcs"
 build.hooks.vcs.version-file = "src/scikit_build_cli/_version.py"
