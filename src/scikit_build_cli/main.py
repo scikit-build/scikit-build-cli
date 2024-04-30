@@ -25,9 +25,9 @@ class LazyGroup(click.Group):
     def __init__(
         self,
         name: str | None = None,
-        commands: MutableMapping[str, click.Command]
-        | Sequence[click.Command]
-        | None = None,
+        commands: (
+            MutableMapping[str, click.Command] | Sequence[click.Command] | None
+        ) = None,
         *,
         lazy_subcommands: Sequence[EntryPoint] = (),
         **kwargs: object,
