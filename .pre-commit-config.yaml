@@ -4,12 +4,12 @@ ci:
 
 repos:
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: "24.4.2"
+    rev: "24.8.0"
     hooks:
       - id: black-jupyter
 
   - repo: https://github.com/adamchainz/blacken-docs
-    rev: "1.16.0"
+    rev: "1.18.0"
     hooks:
       - id: blacken-docs
         additional_dependencies: [black==23.10.0]
@@ -45,13 +45,13 @@ repos:
         args: [--prose-wrap=always]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.4.2"
+    rev: "v0.6.5"
     hooks:
       - id: ruff
         args: ["--fix", "--show-fixes"]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.10.0"
+    rev: "v1.11.2"
     hooks:
       - id: mypy
         files: src|tests
@@ -62,7 +62,7 @@ repos:
           - scikit-build-core[pyproject]
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.2.6"
+    rev: "v2.3.0"
     hooks:
       - id: codespell
 
