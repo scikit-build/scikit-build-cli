@@ -11,7 +11,7 @@ def __dir__() -> list[str]:
 
 @click.command()
 @click.pass_context
-def metadata(ctx: click.Context) -> None:  # noqa: ARG001
+def metadata(ctx: click.Context) -> None:
     """
     Write out the project's metadata
     """

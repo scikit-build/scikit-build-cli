@@ -19,7 +19,7 @@ def __dir__() -> list[str]:
 @click.command()
 @_build_dir
 @click.pass_context
-def build(ctx: click.Context, build_dir: Path) -> None:  # noqa: ARG001
+def build(ctx: click.Context, build_dir: Path) -> None:
     """
     Run cmake build step
     """

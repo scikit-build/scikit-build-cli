@@ -71,7 +71,7 @@ CMDS = list(metadata.entry_points(group="skbuild.commands"))
     help="Path to the Python project's root",
 )
 @click.pass_context
-def skbuild(ctx: click.Context, root: pathlib.Path) -> None:  # noqa: ARG001
+def skbuild(ctx: click.Context, root: pathlib.Path) -> None:
     """
     scikit-build Main CLI interface
     """
